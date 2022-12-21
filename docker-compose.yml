@@ -1,0 +1,20 @@
+version: "3.3"
+
+services:
+  adminer:
+    image: adminer
+    container_name: traefik-adminer
+    restart: always
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik-adminer.service=traefik-adminer"
+      - "traefik.http.routers.traefik-adminer.rule=Host(`${ADMINER_URL}`)"
+      - "traefik.http.services.traefik-adminer.loadbalancer.server.port=8080"
+      - "traefik.http.routers.traefik-adminer.entrypoints=websecure"
+      - "traefik.http.routers.traefik-adminer.tls=true"
+
+networks:
+  traefik_proxy:
+    external: true
